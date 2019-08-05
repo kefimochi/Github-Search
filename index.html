@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>GitHub User Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="assets/styles/main.css" />
+  </head>
+
+  <body>
+    <header>
+      <img
+        class="logo"
+        src="assets/images/logo.png"
+        alt="GitHub's logo and name"
+      />
+
+      <form class="search-container" id="form">
+        <input
+          type="text"
+          id="search-bar"
+          placeholder="Search GitHub users..."
+          required
+        />
+        <a href="#"
+          ><img
+            class="search-icon"
+            id="search-icon"
+            src="assets/images/search-solid.svg"
+        /></a>
+      </form>
+    </header>
+    <section class="corresponding-users"></section>
+    <section class="detailed-user"></section>
+  </body>
+
+  <script src="assets/scripts/index.js"></script>
+</html>
