@@ -7,6 +7,7 @@
   align-items: center;
   flex-direction: column;
   /* background: indianred; */
+  display: none;
 }
 
 .all-users-container h2 {
