@@ -31,24 +31,33 @@
 
 .simple-user {
   margin: 1em;
-  height: 6em;
-  width: 15em;
+  height: 15em;
+  width: 35em;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   border-radius: 1em;
-  background: rgba(255, 255, 255, 0.05);
+  padding-left: 0.5em;
+  padding-right: 1em;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .simple-user img {
-  height: 95%;
-  width: auto;
+  height: auto;
+  width: 20%;
   border-radius: 1em;
   opacity: 0.9;
 }
 
 .simple-user h3 {
   color: #e0e0e0;
-  /* margin-left: 1.2em; */
+  font-family: "Quicksand", sans-serif;
+  font-size: 1em;
+}
+
+@media only screen and (max-width: 1000px) {
+  .all-users {
+    width: 100%;
+  }
 }
