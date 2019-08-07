@@ -6,9 +6,7 @@
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-  /* flex-direction: column; */
-  /* background: indianred; */
-  display: none;
+  /* display: none; */
 }
 
 #users-found {
@@ -17,35 +15,72 @@
   font-family: "Quicksand", sans-serif;
   font-size: 1em;
   text-align: center;
-  display: none;
+  /* display: none; */
+}
+
+.top-description {
+  height: 80%;
+  width: 100%;
+  /* background: peru; */
+  display: flex;
+}
+
+.bottom-description {
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.9em;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-short-info {
+  padding-left: 1em;
 }
 
 .simple-user {
+  padding: 0.5em;
   margin: 1em;
-  height: 15em;
-  width: 23em;
-  display: flex;
-  align-items: center;
+  height: 13em;
+  width: 28em;
   flex-wrap: wrap;
-  justify-content: space-between;
   border-radius: 1em;
-  padding-left: 0.5em;
-  padding-right: 1em;
   background: rgba(255, 255, 255, 0.08);
 }
 
 .simple-user img {
-  height: auto;
-  width: 20%;
-  border-radius: 1em;
+  width: auto;
+  height: 70%;
+  border-radius: 0.5em;
   opacity: 0.9;
 }
 
 .simple-user h3 {
   color: #e0e0e0;
   font-family: "Quicksand", sans-serif;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 
-@media only screen and (max-width: 1000px) {
+.simple-user h3 span {
+  color: #b8b8b8;
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.7em;
+  padding-left: 0.3em;
+}
+
+@media only screen and (max-width: 450px) {
+  .top-description {
+    flex-direction: column;
+  }
+  .simple-user {
+    margin: 0;
+    margin-bottom: 1em;
+    height: auto;
+  }
+
+  .simple-user img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.5em;
+    opacity: 0.9;
+  }
 }
