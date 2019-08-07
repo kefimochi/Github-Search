@@ -65,15 +65,68 @@ function totalFound(users) {
 }
 
 function userComponent(user) {
-  console.log("user", user.avatar_url);
-  let div = document.createElement("div");
-  div.classList.add("simple-user");
-  let img = document.createElement("img");
-  img.setAttribute("src", user.avatar_url);
-  // let login = div.createElement("h3");
-  // login.textContent = "Kefiiiiiiiii";
-  userList.appendChild(div);
-  div.appendChild(img);
+  console.log(user);
+  // <div class="simple-user">
+  //       <div class="top-description">
+  //         <img src="assets/images/moch-image.jpg" />
+  //         <div class="user-short-info">
+
+  //           <h3>Kate Efimova <span>@kefimochi</span></h3>
+  //           <p>
+  //             Hi everyone, I am Roman. I pretty much love building stuff from
+  //             the ground up, or, working on existing projects; though the former
+  //             is my favorite. bool Lor
+  //           </p>
+
+  //         </div>
+  //       </div>
+  //       <div class="bottom-description">
+  //         <h4>Sunnyvale, CA</h4>
+  //         <h4>Followers: 39</h4>
+  //       </div>
+  //     </div>
+
+  // user.followers, user.name, user.login, user.location, user.bio
+
+  let simpleUser = document.createElement("div");
+  simpleUser.classList.add("simple-user");
+  userList.appendChild(simpleUser);
+
+  let topDescription = document.createElement("div");
+  topDescription.classList.add("top-description");
+  simpleUser.appendChild(topDescription);
+
+  let avatar = document.createElement("img");
+  avatar.setAttribute("src", user.avatar_url);
+  topDescription.appendChild(avatar);
+
+  let userShortInfo = document.createElement("div");
+  userShortInfo.classList.add("user-short-info");
+  topDescription.appendChild(userShortInfo);
+
+  let name = document.createElement("h3");
+  name.textContent = user.name;
+  userShortInfo.appendChild(name);
+
+  let login = document.createElement("span");
+  login.textContent = `@${user.login}`;
+  name.appendChild(login);
+
+  let desciption = document.createElement("p");
+  desciption.textContent = user.bio;
+  userShortInfo.appendChild(desciption);
+
+  let bottomDescription = document.createElement("div");
+  bottomDescription.classList.add("bottom-description");
+  simpleUser.appendChild(bottomDescription);
+
+  let location = document.createElement("h4");
+  location.textContent = user.location;
+  bottomDescription.appendChild(location);
+
+  let followers = document.createElement("h4");
+  followers.textContent = `Followers: ${user.followers}`;
+  bottomDescription.appendChild(followers);
 }
 
 function detailedUserComponent() {}

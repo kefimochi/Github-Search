@@ -6,7 +6,7 @@
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-  /* display: none; */
+  display: none;
 }
 
 #users-found {
@@ -15,7 +15,7 @@
   font-family: "Quicksand", sans-serif;
   font-size: 1em;
   text-align: center;
-  /* display: none; */
+  display: none;
 }
 
 .top-description {
