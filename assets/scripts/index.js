@@ -17,15 +17,21 @@ let noResult = document.querySelector(".no-result");
     // Adds searched value to GitHub's API
     let url = `https://api.github.com/search/users?q=${input}`;
     e.preventDefault();
+    // Clears any previous user searches
+    userList.innerHTML = "";
 
     // Goes to a provided url and converts the received data into a JSON object
     fetch(url, {
       method: "get"
-    }).then(res => {
-      res.json().then(result => {
-        result.total_count !== 0 ? addUsersToDOM(result) : noUsersFound();
+    })
+      .then(res => {
+        res.json().then(result => {
+          result.total_count !== 0 ? addUsersToDOM(result) : noUsersFound();
+        });
+      })
+      .catch(err => {
+        console.log(err);
       });
-    });
   });
 })();
 
@@ -35,6 +41,8 @@ function addUsersToDOM(users) {
   totalFound(users.items);
   console.log(users.items);
   users.items.forEach(person => {
+    // Prevents undefined profiles from showing
+    if (person === undefined) return;
     extractUserObject(person);
   });
 }
@@ -51,11 +59,15 @@ function noUsersFound() {
 function extractUserObject(user) {
   return fetch(user.url, {
     method: "get"
-  }).then(res => {
-    res.json().then(result => {
-      userComponent(result);
+  })
+    .then(res => {
+      res.json().then(result => {
+        userComponent(result);
+      });
+    })
+    .catch(err => {
+      console.log(err);
     });
-  });
 }
 
 function totalFound(users) {
@@ -66,28 +78,6 @@ function totalFound(users) {
 
 function userComponent(user) {
   console.log(user);
-  // <div class="simple-user">
-  //       <div class="top-description">
-  //         <img src="assets/images/moch-image.jpg" />
-  //         <div class="user-short-info">
-
-  //           <h3>Kate Efimova <span>@kefimochi</span></h3>
-  //           <p>
-  //             Hi everyone, I am Roman. I pretty much love building stuff from
-  //             the ground up, or, working on existing projects; though the former
-  //             is my favorite. bool Lor
-  //           </p>
-
-  //         </div>
-  //       </div>
-  //       <div class="bottom-description">
-  //         <h4>Sunnyvale, CA</h4>
-  //         <h4>Followers: 39</h4>
-  //       </div>
-  //     </div>
-
-  // user.followers, user.name, user.login, user.location, user.bio
-
   let simpleUser = document.createElement("div");
   simpleUser.classList.add("simple-user");
   userList.appendChild(simpleUser);
