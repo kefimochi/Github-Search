@@ -9,35 +9,35 @@ let noResult = document.querySelector(".no-result");
 // Selects a section where a detailed display will be generated
 let detailedUserSection = document.querySelector(".detailed-user");
 
+let pageNum = 0;
+
 // Accepts string input, fetches data from GitHub's API
 (function() {
   let form = document.querySelector("#form");
+  form.addEventListener("submit", search);
+})();
 
-  form.addEventListener("submit", function(e) {
-    // Captures a string entered in the search field.
-    let input = document.getElementById("search-bar").value;
-    inputString = input;
-    // Adds searched value to GitHub's API
-    let url = `https://api.github.com/search/users?q=${input}`;
-    // Prevents page from reloading and sending data to a sever.
-    e.preventDefault();
-    // Clears any previous user searches
-    userList.innerHTML = "";
+function search(e) {
+  // Captures a string entered in the search field.
+  let input = document.getElementById("search-bar").value;
+  inputString = input;
+  // Adds searched value to GitHub's API
+  let url = `https://api.github.com/search/users?q=${input}&per_page=20&page=${pageNum}`;
+  // Prevents page from reloading and sending data to a sever.
+  e.preventDefault();
+  // Clears any previous user searches
+  userList.innerHTML = "";
 
-    // Goes to a provided url and converts the received data into a JSON object
-    fetch(url, {
+  // Goes to a provided url and converts the received data into a JSON object
+  axios
+    .get(url, {
       method: "get"
     })
-      .then(res => {
-        res.json().then(result => {
-          result.total_count !== 0 ? addUsersToDOM(result) : noUsersFound();
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  });
-})();
+    .then(res => {
+      res.data.items.length !== 0 ? addUsersToDOM(res.data) : noUsersFound();
+    })
+    .catch(err => console.log(err));
+}
 
 function addUsersToDOM(users) {
   userList.style.display = "flex";
@@ -62,21 +62,21 @@ function noUsersFound() {
 }
 
 function extractUserObject(user) {
-  fetch(user.url, {
-    method: "get"
-  })
-    .then(res => {
-      res.json().then(result => {
-        // Returns a small card with brief intro to a GitHub user
-        let simpleUser = createUserComponent(result);
-        //
-        simpleUser.addEventListener("click", () => {
-          showFullUser(user, result);
-        });
-      });
+  axios
+    .get(user.url, {
+      method: "get"
     })
-    .catch(err => {
-      console.log(err);
+    .then(res => {
+      // Creates a brief user component & attaches to the DOM
+      let simpleUser = createUserComponent(res.data);
+      // Shows full profile of a user when clicked
+      simpleUser
+        .addEventListener("click", () => {
+          showFullUser(user, res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     });
 }
 
