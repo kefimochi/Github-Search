@@ -23,7 +23,6 @@ let totalUsersFound = 0;
     e.preventDefault();
     // Finds total every time a new form is submitted, not
     // affected by pagination
-    totalFound();
     search();
   });
 })();
@@ -34,16 +33,20 @@ function search() {
   // Adds searched value to GitHub's API
   console.log("Page num is ", pageNum);
   let url = `https://api.github.com/search/users?q=${inputString}&per_page=10&page=${pageNum}`;
+  // let url = `https://api.github.com/search/users?q=${inputString}`;
   // Clears any previous user searches
   userList.innerHTML = "";
 
   // Goes to a provided url and converts the received data into a JSON object
+  totalFound();
   axios
     .get(url, {
       method: "get"
     })
     .then(res => {
-      res.data.items.length !== 0 ? addUsersToDOM(res.data) : noUsersFound();
+      // console.log(res.data.total_count);
+      // pagination(res);
+      res.data.items.length > 0 ? addUsersToDOM(res.data) : noUsersFound();
     })
     .catch(err => console.log(err));
 }
@@ -89,17 +92,20 @@ function extractUserObject(user) {
     });
 }
 
+// Sends a request to the last search page and gets the total found results count
 function totalFound() {
   numFound.style.display = "block";
   axios
-    .get(`https://api.github.com/search/users?q=${inputString}`, {
-      method: "get"
-    })
+    .get(
+      `https://api.github.com/search/users?q=${inputString}&per_page=10&page=${pageNum}:last`,
+      {
+        method: "get"
+      }
+    )
     .then(res => {
       totalUsersFound = res.data.total_count;
-      numFound.textContent = `Found ${
-        res.data.total_count
-      } results for ${inputString}, page ${pageNum + 1}`;
+      numFound.textContent = `Found ${totalUsersFound} results for "${inputString}", page ${pageNum +
+        1}`;
     });
 }
 
@@ -150,14 +156,63 @@ function createUserComponent(user) {
 
 function showFullUser(user, detailedUser) {
   arrowContainer.style.display = "none";
-  detailedUserComponent(user, detailedUser);
-}
-
-function detailedUserComponent(user, detailedUser) {
   noResult.style.display = "none";
   numFound.style.display = "none";
   userList.style.display = "none";
   detailedUserSection.style.display = "flex";
+  detailedUserComponent(user, detailedUser);
+}
+
+function detailedUserComponent(user, detailedUser) {
+  console.log("USER", user);
+  console.log("DTAILD", detailedUser);
+
+  //detailedUserSection
+  // <div class="top-detailed">
+  //       <img src="assets/images/moch-image.jpg" />
+  //       <div class="detailed-info">
+  //         <h2>Kate Efimova</h2>
+  //         <p>
+  //           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus
+  //           non hic pariatur laudantium minima praesentium! Vero aliquam ducimus
+  //           unde voluptatum! Voluptatem quos animi fugiat eveniet quas vitae,
+  //           sapiente natus non.
+  //         </p>
+  //         <div class="all-numbers">
+  //           <div class="num-container">
+  //             <h2>19</h2>
+  //             <h5>Following</h5>
+  //           </div>
+  //           <div class="num-container">
+  //             <h2>26</h2>
+  //             <h5>Followerd</h5>
+  //           </div>
+  //           <div class="num-container">
+  //             <h2>30</h2>
+  //             <h5>Repos</h5>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <div class="bottom-detailed">
+  //       <div class="repo-container">
+  //         <div class="top-repo">
+  //           <h2>MDN Search Extension</h2>
+  //           <p>
+  //             Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ex
+  //             alias at explicabo assumenda harum maxime provident facilis
+  //             temporibus earum. Delectus totam rerum ut, tempore perferendis sed
+  //             qui distinctio tenetur.
+  //           </p>
+  //         </div>
+  //         <div class="bottom-repo">
+  //           <img src="assets/images/star-solid.svg" alt="Star icon" />
+  //           <h4>30</h4>
+  //           <img src="assets/images/code-branch-solid.svg" alt="Branch icon" />
+  //           <h4>5</h4>
+  //         </div>
+  //       </div>
+  //     </div>
 }
 
 // Allows user to traverse through pages
@@ -170,8 +225,6 @@ arrowLeft.addEventListener("click", () => {
   }
 });
 arrowRight.addEventListener("click", () => {
-  // if (numFound  0) {
-  console.log(totalUsersFound);
   if (pageNum < totalUsersFound / 10) {
     pageNum++;
     search();
