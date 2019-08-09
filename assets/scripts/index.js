@@ -8,23 +8,26 @@ let userList = document.querySelector(".all-users-container");
 let noResult = document.querySelector(".no-result");
 // Selects a section where a detailed display will be generated
 let detailedUserSection = document.querySelector(".detailed-user");
-
+// Page number that will be needed for pagination
 let pageNum = 0;
+// Selects the arrow container
+let arrowContainer = document.querySelector(".arrows-container");
 
 // Accepts string input, fetches data from GitHub's API
 (function() {
   let form = document.querySelector("#form");
-  form.addEventListener("submit", search);
+  form.addEventListener("submit", e => {
+    // Prevents page from reloading and sending data to a sever.
+    e.preventDefault();
+    search();
+  });
 })();
 
-function search(e) {
+function search() {
   // Captures a string entered in the search field.
-  let input = document.getElementById("search-bar").value;
-  inputString = input;
+  inputString = document.getElementById("search-bar").value;
   // Adds searched value to GitHub's API
-  let url = `https://api.github.com/search/users?q=${input}&per_page=20&page=${pageNum}`;
-  // Prevents page from reloading and sending data to a sever.
-  e.preventDefault();
+  let url = `https://api.github.com/search/users?q=${inputString}&per_page=10&page=${pageNum}`;
   // Clears any previous user searches
   userList.innerHTML = "";
 
@@ -42,7 +45,8 @@ function search(e) {
 function addUsersToDOM(users) {
   userList.style.display = "flex";
   noResult.style.display = "none";
-  totalFound(users.items);
+  arrowContainer.style.display = "flex";
+  totalFound();
   console.log(users.items);
   users.items.forEach(person => {
     // Prevents undefined profiles from showing
@@ -57,6 +61,7 @@ function addUsersToDOM(users) {
 function noUsersFound() {
   numFound.style.display = "none";
   userList.style.display = "none";
+  arrowContainer.style.display = "none";
   noResult.style.display = "flex";
   alert(`No ${inputString} users found. Please try again!`);
 }
@@ -70,19 +75,26 @@ function extractUserObject(user) {
       // Creates a brief user component & attaches to the DOM
       let simpleUser = createUserComponent(res.data);
       // Shows full profile of a user when clicked
-      simpleUser
-        .addEventListener("click", () => {
-          showFullUser(user, res.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      simpleUser.addEventListener("click", () => {
+        showFullUser(user, res.data);
+      });
+    })
+    .catch(err => {
+      console.log(err);
     });
 }
 
-function totalFound(users) {
+function totalFound() {
   numFound.style.display = "block";
-  numFound.textContent = `Found ${users.length} results for ${inputString}`;
+  axios
+    .get(`https://api.github.com/search/users?q=${inputString}`, {
+      method: "get"
+    })
+    .then(res => {
+      numFound.textContent = `Found ${
+        res.data.total_count
+      } results for ${inputString}`;
+    });
 }
 
 function createUserComponent(user) {
@@ -142,3 +154,18 @@ function detailedUserComponent(user, detailedUser) {
   userList.style.display = "none";
   detailedUserSection.style.display = "flex";
 }
+
+let arrowLeft = document.querySelector("#arrow-left");
+let arrowRight = document.querySelector("#arrow-right");
+arrowLeft.addEventListener("click", () => {
+  if (numFound > 0) {
+    numFound--;
+    search();
+  }
+});
+arrowRight.addEventListener("click", () => {
+  // if (numFound  0) {
+  numFound++;
+  search();
+  // }
+});
