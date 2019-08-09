@@ -1,5 +1,5 @@
 .no-result {
-  margin-top: 17em;
+  margin-top: 6em;
   height: 7.5em;
   width: 100%;
   letter-spacing: 0.1em;
@@ -11,7 +11,7 @@
   font-family: "Quicksand", sans-serif;
   user-select: none;
   text-align: center;
-  display: none;
+  /* display: none; */
 }
 
 .no-result img {

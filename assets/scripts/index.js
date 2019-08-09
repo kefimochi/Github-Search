@@ -168,8 +168,41 @@ function detailedUserComponent(user, detailedUser) {
   console.log("DTAILD", detailedUser);
 
   //detailedUserSection
-  // <div class="top-detailed">
-  //       <img src="assets/images/moch-image.jpg" />
+
+  // -------------Top section of container  --------------------- //
+  let topDetailed = document.createElement("div");
+  topDetailed.classList.add("top-detailed");
+  detailedUserSection.appendChild(topDetailed);
+
+  let avatar = document.createElement("img");
+  avatar.setAttribute("src", user.avatar_url);
+  topDetailed.appendChild(avatar);
+
+  let detailedInfo = document.createElement("div");
+  detailedInfo.classList.add("detailed-info");
+  topDetailed.appendChild(detailedInfo);
+
+  let name = document.createElement("h2");
+  console.log(user.name);
+  name.textContent = user.name;
+  detailedInfo.appendChild(name);
+
+  let desciption = document.createElement("p");
+  desciption.textContent = detailedUser.bio;
+  detailedInfo.appendChild(desciption);
+
+  let allStats = document.createElement("div");
+  allStats.classList.add("all-numbers");
+  detailedInfo.appendChild(allStats);
+
+  let numContainer1 = document.createElement("div");
+  numContainer1.classList.add("num-container");
+
+  // -------------Bottom section of container  --------------------- //
+  let bottomDetailed = document.createElement("div");
+  bottomDetailed.classList.add("bottom-detailed");
+  detailedUserSection.appendChild(bottomDetailed);
+
   //       <div class="detailed-info">
   //         <h2>Kate Efimova</h2>
   //         <p>
@@ -212,7 +245,6 @@ function detailedUserComponent(user, detailedUser) {
   //           <h4>5</h4>
   //         </div>
   //       </div>
-  //     </div>
 }
 
 // Allows user to traverse through pages
