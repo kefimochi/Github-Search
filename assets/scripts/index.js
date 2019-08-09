@@ -149,8 +149,7 @@ function createUserComponent(user) {
 }
 
 function showFullUser(user, detailedUser) {
-  console.log("detaild", detailedUser);
-  console.log("user", user);
+  arrowContainer.style.display = "none";
   detailedUserComponent(user, detailedUser);
 }
 
@@ -164,14 +163,15 @@ function detailedUserComponent(user, detailedUser) {
 // Allows user to traverse through pages
 let arrowLeft = document.querySelector("#arrow-left");
 let arrowRight = document.querySelector("#arrow-right");
-
 arrowLeft.addEventListener("click", () => {
-  if (numFound > 0) {
+  if (pageNum > 0) {
     pageNum--;
     search();
   }
 });
 arrowRight.addEventListener("click", () => {
+  // if (numFound  0) {
+  console.log(totalUsersFound);
   if (pageNum < totalUsersFound / 10) {
     pageNum++;
     search();
