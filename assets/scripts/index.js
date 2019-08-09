@@ -12,6 +12,8 @@ let detailedUserSection = document.querySelector(".detailed-user");
 let pageNum = 0;
 // Selects the arrow container
 let arrowContainer = document.querySelector(".arrows-container");
+// To use for pagination and displaying on screen
+let totalUsersFound = 0;
 
 // Accepts string input, fetches data from GitHub's API
 (function() {
@@ -19,6 +21,9 @@ let arrowContainer = document.querySelector(".arrows-container");
   form.addEventListener("submit", e => {
     // Prevents page from reloading and sending data to a sever.
     e.preventDefault();
+    // Finds total every time a new form is submitted, not
+    // affected by pagination
+    totalFound();
     search();
   });
 })();
@@ -27,6 +32,7 @@ function search() {
   // Captures a string entered in the search field.
   inputString = document.getElementById("search-bar").value;
   // Adds searched value to GitHub's API
+  console.log("Page num is ", pageNum);
   let url = `https://api.github.com/search/users?q=${inputString}&per_page=10&page=${pageNum}`;
   // Clears any previous user searches
   userList.innerHTML = "";
@@ -46,8 +52,7 @@ function addUsersToDOM(users) {
   userList.style.display = "flex";
   noResult.style.display = "none";
   arrowContainer.style.display = "flex";
-  totalFound();
-  console.log(users.items);
+  // console.log(users.items);
   users.items.forEach(person => {
     // Prevents undefined profiles from showing
     if (person === undefined) return;
@@ -91,9 +96,10 @@ function totalFound() {
       method: "get"
     })
     .then(res => {
+      totalUsersFound = res.data.total_count;
       numFound.textContent = `Found ${
         res.data.total_count
-      } results for ${inputString}`;
+      } results for ${inputString}, page ${pageNum + 1}`;
     });
 }
 
@@ -155,17 +161,19 @@ function detailedUserComponent(user, detailedUser) {
   detailedUserSection.style.display = "flex";
 }
 
+// Allows user to traverse through pages
 let arrowLeft = document.querySelector("#arrow-left");
 let arrowRight = document.querySelector("#arrow-right");
+
 arrowLeft.addEventListener("click", () => {
   if (numFound > 0) {
-    numFound--;
+    pageNum--;
     search();
   }
 });
 arrowRight.addEventListener("click", () => {
-  // if (numFound  0) {
-  numFound++;
-  search();
-  // }
+  if (pageNum < totalUsersFound / 10) {
+    pageNum++;
+    search();
+  }
 });
