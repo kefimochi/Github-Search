@@ -160,6 +160,7 @@ function showFullUser(user, detailedUser) {
   numFound.style.display = "none";
   userList.style.display = "none";
   detailedUserSection.style.display = "flex";
+  detailedUserComponent.innerHTML = "";
   detailedUserComponent(user, detailedUser);
 }
 
@@ -184,7 +185,7 @@ function detailedUserComponent(user, detailedUser) {
 
   let name = document.createElement("h2");
   console.log(user.name);
-  name.textContent = user.name;
+  name.textContent = detailedUser.name;
   detailedInfo.appendChild(name);
 
   let desciption = document.createElement("p");
@@ -197,38 +198,61 @@ function detailedUserComponent(user, detailedUser) {
 
   let numContainer1 = document.createElement("div");
   numContainer1.classList.add("num-container");
+  allStats.appendChild(numContainer1);
+
+  let cont1Title = document.createElement("h2");
+  cont1Title.textContent = detailedUser.following;
+  numContainer1.appendChild(cont1Title);
+
+  let cont1Desc = document.createElement("h5");
+  cont1Desc.textContent = "Following";
+  numContainer1.appendChild(cont1Desc);
+
+  let numContainer2 = document.createElement("div");
+  numContainer2.classList.add("num-container");
+  allStats.appendChild(numContainer2);
+
+  let cont2Title = document.createElement("h2");
+  cont2Title.textContent = detailedUser.followers;
+  numContainer2.appendChild(cont2Title);
+
+  let cont2Desc = document.createElement("h5");
+  cont2Desc.textContent = "Followers";
+  numContainer2.appendChild(cont2Desc);
+
+  let numContainer3 = document.createElement("div");
+  numContainer3.classList.add("num-container");
+  allStats.appendChild(numContainer3);
+
+  let cont3Title = document.createElement("h2");
+  cont3Title.textContent = detailedUser.public_repos;
+  numContainer3.appendChild(cont3Title);
+
+  let cont3Desc = document.createElement("h5");
+  cont3Desc.textContent = "Repositories";
+  numContainer3.appendChild(cont3Desc);
+
+  //public_repos
 
   // -------------Bottom section of container  --------------------- //
   let bottomDetailed = document.createElement("div");
   bottomDetailed.classList.add("bottom-detailed");
   detailedUserSection.appendChild(bottomDetailed);
 
-  //       <div class="detailed-info">
-  //         <h2>Kate Efimova</h2>
-  //         <p>
-  //           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus
-  //           non hic pariatur laudantium minima praesentium! Vero aliquam ducimus
-  //           unde voluptatum! Voluptatem quos animi fugiat eveniet quas vitae,
-  //           sapiente natus non.
-  //         </p>
-  //         <div class="all-numbers">
-  //           <div class="num-container">
-  //             <h2>19</h2>
-  //             <h5>Following</h5>
-  //           </div>
-  //           <div class="num-container">
-  //             <h2>26</h2>
-  //             <h5>Followerd</h5>
-  //           </div>
-  //           <div class="num-container">
-  //             <h2>30</h2>
-  //             <h5>Repos</h5>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //     <div class="bottom-detailed">
-  //       <div class="repo-container">
+  let repoContainer = document.createElement("div");
+  repoContainer.classList.add("repo-container");
+  bottomDetailed.appendChild(repoContainer);
+
+  let topRepo = document.createElement("div");
+  topRepo.classList.add("top-repo");
+  repoContainer.appendChild(topRepo);
+
+  let bottomRepo = document.createElement("div");
+  bottomRepo.classList.add("bottom-repo");
+  repoContainer.appendChild(bottomRepo);
+
+  // Get an API request for all user repos, afte which iterate through the array using forEach
+
   //         <div class="top-repo">
   //           <h2>MDN Search Extension</h2>
   //           <p>
@@ -244,7 +268,6 @@ function detailedUserComponent(user, detailedUser) {
   //           <img src="assets/images/code-branch-solid.svg" alt="Branch icon" />
   //           <h4>5</h4>
   //         </div>
-  //       </div>
 }
 
 // Allows user to traverse through pages
